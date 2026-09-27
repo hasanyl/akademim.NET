@@ -1,15 +1,20 @@
 package com.akademim.backend;
 
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
 public class Course {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long courseId;
-    //NotBlank yapısında "", null veya "    " kabul edilmez.
-    @NotBlank
     private String courseName;
-    @NotBlank
     private String courseTeacher;
+
+    public Course(){}
 
     public Course(Long courseId, String courseName, String courseTeacher){
         this.courseId = courseId;

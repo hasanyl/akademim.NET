@@ -1,5 +1,9 @@
 package com.akademim.backend;
 
+import com.akademim.backend.dto.CourseResponse;
+import com.akademim.backend.dto.CreateCourseRequest;
+import com.akademim.backend.dto.UpdateCourseRequest;
+import com.akademim.backend.mapper.CourseMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,19 +26,29 @@ public class CourseController {
 
 
     @GetMapping
-    public List<Course> getCourses(){
+    public List<CourseResponse> getCourses(){
+        List<Course> courses = courseService.getCourses();
+        List<CourseResponse> responses = new ArrayList<>();
 
-        return courseService.getCourses();
+        for(Course course : courses){
+            responses.add(CourseMapper.toResponse(course));
+        }
+
+        return responses;
     }
 
     @PostMapping
-    public ResponseEntity<Course> addCourse(@Valid @RequestBody Course course){
+    public ResponseEntity<CourseResponse> addCourse(@Valid @RequestBody CreateCourseRequest request){
+
+        Course course = CourseMapper.toEntity(request);
 
         Course createdCourse = courseService.addCourse(course);
 
+        CourseResponse response = CourseMapper.toResponse(createdCourse);
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(createdCourse);
+                .body(response);
     }
 
     @DeleteMapping("/{courseId}")
@@ -49,15 +63,17 @@ public class CourseController {
     }
 
     @PutMapping("/{courseId}")
-    public ResponseEntity<Course> updateCourse(@PathVariable Long courseId, @Valid @RequestBody Course updatedCourse){
+    public ResponseEntity<CourseResponse> updateCourse(@PathVariable Long courseId, @Valid @RequestBody UpdateCourseRequest request){
 
-        Course course = courseService.updateCourse(courseId, updatedCourse);
+        Course course = courseService.updateCourse(courseId, request);
 
         if(course == null){
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(course);
+        CourseResponse response = CourseMapper.toResponse(course);
+
+        return ResponseEntity.ok(response);
     }
 
 }

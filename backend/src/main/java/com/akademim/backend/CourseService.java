@@ -1,50 +1,48 @@
 package com.akademim.backend;
 
 
+import com.akademim.backend.dto.UpdateCourseRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourseService {
-    private final List<Course> courses = new ArrayList<>();
-    private Long nexId = 4L;
 
-    public CourseService(){
-        Course course = new Course(1L, "Matematik", "Abdullah Bakır");
-        Course course1 = new Course(2L, "Fizik", "Esra Arslan");
-        Course course2 = new Course(3L, "Algoritma ve Programlama 2", "Ercan Ezin");
+    private final CourseRepository courseRepository;
 
-        courses.add(course);
-        courses.add(course1);
-        courses.add(course2);
+    public CourseService(CourseRepository courseRepository){
+        this.courseRepository = courseRepository;
     }
 
     public List<Course> getCourses(){
-        return courses;
+        return courseRepository.findAll();
     }
 
     public Course addCourse(Course course){
-        course.setCourseId(nexId);
-        nexId++;
-
-        courses.add(course);
-        return course;
+        return courseRepository.save(course);
     }
 
     public boolean deleteCourse(Long courseId){
-        return courses.removeIf(course -> courseId.equals(course.getCourseId()));
+         if(courseRepository.existsById(courseId)){
+             courseRepository.deleteById(courseId);
+             return true;
+         }
+
+         return false;
     }
 
-    public Course updateCourse(Long courseId, Course updatedCourse){
-        for(Course course : courses) {
-            if (courseId.equals(course.getCourseId())) {
-                course.setCourseName(updatedCourse.getCourseName());
-                course.setCourseTeacher(updatedCourse.getCourseTeacher());
+    public Course updateCourse(Long courseId, UpdateCourseRequest request){
+        Optional<Course> courseOptional = courseRepository.findById(courseId);
 
-                return course;
-            }
+        if(courseOptional.isPresent()){
+            Course course = courseOptional.get();
+            course.setCourseName(request.getCourseName());
+            course.setCourseTeacher(request.getCourseTeacher());
+            Course savedCourse = courseRepository.save(course);
+            return savedCourse;
         }
 
         return null;

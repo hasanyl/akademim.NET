@@ -26,7 +26,6 @@ function App() {
       }
 
     const course = {
-      courseId : 1,
       courseName,
       courseTeacher
     }

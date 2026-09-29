@@ -1,4 +1,4 @@
-package com.akademim.backend;
+package com.akademim.backend.entity;
 
 
 import jakarta.persistence.Entity;

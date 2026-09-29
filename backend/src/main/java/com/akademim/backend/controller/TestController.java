@@ -1,4 +1,4 @@
-package com.akademim.backend;
+package com.akademim.backend.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

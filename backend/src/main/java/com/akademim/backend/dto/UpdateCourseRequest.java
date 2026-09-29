@@ -3,9 +3,9 @@ package com.akademim.backend.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public class UpdateCourseRequest {
-    @NotBlank
+    @NotBlank(message = "Ders adı boş olamaz")
     private String courseName;
-    @NotBlank
+    @NotBlank(message = "Öğretmen adı boş olamaz")
     private String courseTeacher;
 
     //Getters

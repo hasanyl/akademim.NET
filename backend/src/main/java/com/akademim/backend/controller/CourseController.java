@@ -1,5 +1,7 @@
-package com.akademim.backend;
+package com.akademim.backend.controller;
 
+import com.akademim.backend.entity.Course;
+import com.akademim.backend.service.CourseService;
 import com.akademim.backend.dto.CourseResponse;
 import com.akademim.backend.dto.CreateCourseRequest;
 import com.akademim.backend.dto.UpdateCourseRequest;
@@ -67,9 +69,6 @@ public class CourseController {
 
         Course course = courseService.updateCourse(courseId, request);
 
-        if(course == null){
-            return ResponseEntity.notFound().build();
-        }
 
         CourseResponse response = CourseMapper.toResponse(course);
 

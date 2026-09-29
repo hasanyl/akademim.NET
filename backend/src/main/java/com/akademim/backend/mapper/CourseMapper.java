@@ -1,6 +1,6 @@
 package com.akademim.backend.mapper;
 
-import com.akademim.backend.Course;
+import com.akademim.backend.entity.Course;
 import com.akademim.backend.dto.CourseResponse;
 import com.akademim.backend.dto.CreateCourseRequest;
 

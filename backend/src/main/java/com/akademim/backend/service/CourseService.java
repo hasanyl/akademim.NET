@@ -1,10 +1,12 @@
-package com.akademim.backend;
+package com.akademim.backend.service;
 
 
 import com.akademim.backend.dto.UpdateCourseRequest;
+import com.akademim.backend.entity.Course;
+import com.akademim.backend.exception.CourseNotFoundException;
+import com.akademim.backend.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +47,7 @@ public class CourseService {
             return savedCourse;
         }
 
-        return null;
+        throw new CourseNotFoundException("Ders bulunamadı. Ders ID : " + courseId);
     }
 
 }

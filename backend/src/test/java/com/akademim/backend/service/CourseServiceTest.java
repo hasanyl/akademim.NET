@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -63,6 +64,31 @@ public class CourseServiceTest {
         assertTrue(result.isEmpty());
 
         verify(courseRepository).findAll();
+    }
+
+    @Test
+    void shouldAddCourse(){
+        //Gelen kaydetme isteği
+        Course course = new Course();
+        course.setCourseTeacher("Hasan Yılmaz");
+        course.setCourseName("Java ile kodlama");
+
+        //Repository'in döndüreceği nesne
+        Course savedCourse = new Course();
+        savedCourse.setCourseId(1L);
+        savedCourse.setCourseName("Java ile kodlama");
+        savedCourse.setCourseTeacher("Hasan Yılmaz");
+
+        when(courseRepository.save(any(Course.class)))
+                .thenReturn(savedCourse);
+
+        Course result = courseService.addCourse(course);
+
+        assertEquals(1L, result.getCourseId());
+        assertEquals("Hasan Yılmaz", result.getCourseTeacher());
+        assertEquals("Java ile kodlama", result.getCourseName());
+
+        verify(courseRepository).save(course);
     }
 
 }
